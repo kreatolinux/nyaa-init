@@ -45,7 +45,9 @@ info() {
 }
 
 chkroot() {
-  echo "test"
+  if [ "$(id -u)" != "0" ]; then
+    err "${RED}nyaa${NC}: you have to be root"
+  fi
 }
 
 # runit <-> nyaa-init <-> service
