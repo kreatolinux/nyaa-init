@@ -1,0 +1,7 @@
+#!/bin/sh
+NAME="dhcpcd"
+DEPENDS="wpa_supplicant"
+DESC="DHCP daemon"
+EXECPRE="echo 'this is a test'"
+EXEC="dhcpcd"
+EXECPOST="echo 'post test'"
