@@ -53,10 +53,18 @@ runit_enable() {
 }
 
 runit_start() {
-  # WIP: ADD DEPENDS CODE
+  unset DEPENDS
   unset EXECPRE
   unset EXECPOST
+  
   . "/etc/nyaa.d/$1" || err "Service doesn't exist"
+  
+  for i in "$(echo "$DEPENDS" | tr " " "\n")"
+  do
+    echo "$NAME depends on $i, starting $i"
+    runit_start "$i"
+  done
+
   info "starting $NAME, $DESC"
   $EXECPRE
   $EXEC
