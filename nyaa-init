@@ -72,7 +72,7 @@ runit_start() {
 }
 
 detect_init() {
-  case "$(ps -p 1 -o comm=)"
+  case "$(ps -p 1 -o comm=)" in
     "systemd")
       systemd_"$1" "$2"
     ;;
