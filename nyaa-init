@@ -71,13 +71,27 @@ runit_start() {
   $EXECPOST
 }
 
+detect_init() {
+  case "$(ps -p 1 -o comm=)"
+    "systemd")
+      systemd_"$1" "$2"
+    ;;
+    "runit")
+      runit_"$1" "$2"
+    ;;
+    *)
+      err "This init system isn't supported yet"
+    ;;
+  esac
+}
+
 
 case "$1" in
   "enable")
-    runit_enable "$2" # Add init detection code
+    detect_init enable "$2"
   ;;
   "start")
-    runit_start "$2" # Add init detection code
+    detect_init start "$2"
   ;;
   "status")
     echo "WIP"
