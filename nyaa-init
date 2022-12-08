@@ -34,6 +34,14 @@ chkroot() {
   fi
 }
 
+systemd_enable() {
+  echo "WIP"
+}
+
+systemd_start() {
+  echo "WIP"
+}
+
 # runit <-> nyaa-init <-> service
 # Usage: nyaa-init enable service
 runit_enable() {
