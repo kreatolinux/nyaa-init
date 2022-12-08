@@ -48,7 +48,7 @@ runit_enable() {
   chkroot
   [ ! -f "/etc/nyaa.d/$1" ] && err "Service couldn't be found"
   
-  if [ ! -f "/etc/sv/nyaa_$1" ]; then
+  if [ ! -d "/etc/sv/nyaa_$1" ]; then
     info "Creating service for runit"
     mkdir -p "/etc/sv/nyaa_$1"
     echo "#!/bin/sh" > "/etc/sv/nyaa_$1/run"
@@ -79,6 +79,23 @@ runit_start() {
   $EXECPOST
 }
 
+runit_disable() {
+  chkroot
+  if [ -d "/etc/sv/nyaa_$1" ]; then
+    info "Disabling runit service"
+    rm -rf "/etc/sv/nyaa_$1"
+    rm -rf "/var/service/nyaa_$1"
+  else
+    err "Service isn't enabled"
+  fi
+}
+
+runit_status() {
+  chkroot
+  [ ! -d "/var/service/nyaa_$1" ] && err "Service doesn't exist"
+  sv status "nyaa_$1"
+}
+
 detect_init() {
   case "$(ps -p 1 -o comm=)" in
     "systemd")
@@ -102,10 +119,10 @@ case "$1" in
     detect_init start "$2"
   ;;
   "status")
-    echo "WIP"
+    detect_init status "$2"
   ;;
   "disable")
-    echo "WIP"
+    detect_init disable "$2"
   ;;
   *)
     echo "usage: nyaa-init [enable,start,status,disable] service"
